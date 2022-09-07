@@ -1,3 +1,4 @@
+# CIDR Values for VNETS and  will need to use pipeline variables
 locals {
   vnets = [
     {
@@ -32,15 +33,17 @@ locals {
     }
   ]
 }
+# Don't need this as a module:
+/*
 module "azure_region" {
-  source  = "claranet/regions/azurerm"
+  source = "https://dev.azure.com/CornerStoneBuildingBrands/ABS-Insight%20Project/_git/terraform-module/regions/azurerm"
   version = "x.x.x"
 
   azure_region = var.azure_region
 }
 
 module "rg" {
-  source  = "claranet/rg/azurerm"
+  source  = "https://dev.azure.com/CornerStoneBuildingBrands/ABS-Insight%20Project/_git/terraform-module/rg/azurerm"
   version = "x.x.x"
 
   location    = module.azure_region.location
@@ -48,9 +51,9 @@ module "rg" {
   environment = var.environment
   stack       = var.stack
 }
-
+*/
 module "virtual_wan" {
-  source  = "claranet/virtual-wan/azurerm"
+  source  = "https://dev.azure.com/CornerStoneBuildingBrands/ABS-Insight%20Project/_git/terraform-module/virtual-wan/azurerm"
   version = "x.x.x"
 
   client_name = var.client_name
@@ -164,7 +167,7 @@ module "virtual_wan" {
 module "azure_virtual_network" {
   for_each = { for vnet in local.vnets : vnet.vnet_name => vnet }
 
-  source  = "claranet/vnet/azurerm"
+  source  = "https://dev.azure.com/CornerStoneBuildingBrands/ABS-Insight%20Project/_git/terraform-module/vnet/azurerm"
   version = "x.x.x"
 
   environment = var.environment
@@ -181,7 +184,7 @@ module "azure_virtual_network" {
 }
 
 module "azure_network_subnet" {
-  source  = "claranet/subnet/azurerm"
+  source  = "https://dev.azure.com/CornerStoneBuildingBrands/ABS-Insight%20Project/_git/terraform-module/subnet/azurerm"
   version = "x.x.x"
 
   for_each    = { for subnet in local.subnets : subnet.name => subnet }
@@ -200,7 +203,7 @@ module "azure_network_subnet" {
 }
 
 module "logs" {
-  source  = "claranet/run-common/azurerm//modules/logs"
+  source  = "https://dev.azure.com/CornerStoneBuildingBrands/ABS-Insight%20Project/_git/terraform-module/run-common/azurerm//modules/logs"
   version = "x.x.x"
 
   client_name = var.client_name
